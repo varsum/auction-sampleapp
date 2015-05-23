@@ -1,12 +1,12 @@
 package pl.epoint.academy.auction.domain
 
-import spock.lang.Specification
-
-class AuctionBiddingSpec extends Specification{
-
-	def "User bids in auction and it succeed."() {
-		given: "an identity of an user and an identity of an auction"
-        Integer userId = 102_7878
+/**
+ * @author dchojnacki
+ */
+class AuctionBiddingSpec extends spock.lang.Specification {
+    def "User bids in auction and it succeed."() {
+        given: "an identity of an user and an identity of an auction"
+        Integer userId = 100_000
         Integer auctionId = 12_787
 
         and: "a bid value"
@@ -23,11 +23,11 @@ class AuctionBiddingSpec extends Specification{
 
         then: "last bid is of price given by that user"
         bid == userBid.bid
-	}
+    }
 
     def "User bids in auction and it's bid is too low."() {
         given: "an identity of an user and an identity of an auction"
-        Integer userId = 102_7878
+        Integer userId = 100_001
         Integer auctionId = 12_787
 
         and: "a bid value"
@@ -44,11 +44,8 @@ class AuctionBiddingSpec extends Specification{
         exception.message == 'Your bid has been rejected due to too low bid value'
 
         and: "User bid is too low"
-        exception.reason = AuctionBiddingOperationException.Reason.BID_TOO_LOW
+        exception.reason == AuctionBiddingOperationException.Reason.BID_TOO_LOW
 
 
     }
-	
-	
 }
-

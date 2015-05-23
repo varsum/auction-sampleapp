@@ -1,11 +1,13 @@
 package pl.epoint.academy.auction.domain
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp
 
 /**
  * @author dchojnacki
  */
-public class AuctionBid implements Serializable{
+public class AuctionBid implements Serializable {
     private final Integer auctionId;
     private final Integer userId;
     private final BigDecimal bid;
