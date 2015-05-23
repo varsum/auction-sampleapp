@@ -1,26 +1,52 @@
 package pl.epoint.academy.auction.domain
 
-import spock.lang.*
-
-import com.manning.spock.chapter5.tables.Adder
+import spock.lang.Specification
 
 class AuctionBiddingSpec extends Specification{
 
 	def "User bids in auction and it succeed."() {
 		given: "an identity of an user and an identity of an auction"
+        Integer userId = 102_7878
+        Integer auctionId = 12_787
+
+        and: "a bid value"
+        BigDecimal bid = 3_150
+
         and: "bidding facade"
-        when: "user bids on a auction"
+        AuctionBiddingFacade biddingFacade = new AuctionBiddingFacade()
+
+        when: "user bids on an auction"
+        AuctionBid userBid = biddingFacade.bid(auctionId, userId, bid)
+
         then: "last bid is from that user"
-        and: "last price of bid is from that user"
+        userId == userBid.userId
+
+        then: "last bid is of price given by that user"
+        bid == userBid.bid
 	}
 
-    def "User bids in auction and it is not highest bid"() {
+    def "User bids in auction and it's bid is too low."() {
         given: "an identity of an user and an identity of an auction"
+        Integer userId = 102_7878
+        Integer auctionId = 12_787
+
+        and: "a bid value"
+        BigDecimal bid = 3_150
+
         and: "bidding facade"
-        when: "user bids on a auction"
-        then: "user get info about highest bid in auction"
-        and: "last bid is from another user"
-        and: "last price of bid is unchanged"
+        AuctionBiddingFacade biddingFacade = new AuctionBiddingFacade()
+
+        when: "user bids on an auction"
+        AuctionBid userBid = biddingFacade.bid(auctionId, userId, bid)
+
+        then: "Actual price of auction product is not changed"
+        AuctionBiddingOperationException exception = thrown()
+        exception.message == 'Your bid has been rejected due to too low bid value'
+
+        and: "User bid is too low"
+        exception.reason = AuctionBiddingOperationException.Reason.BID_TOO_LOW
+
+
     }
 	
 	
